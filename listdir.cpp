@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <string>
 #include <fstream>
+#include <string.h>
 using namespace std;
 
 // Funcion para listar los archivos en un directorio de forma recursiva
@@ -42,19 +43,26 @@ void list_files(string dir, string tab, ofstream &out) {
 
 int main() {
     // Directorio por defecto es el directorio actual
-    string dir = ".";
+    string dir;
     // Nombre del archivo de salida
     string output_file;
 
-    cout << "Listing files in directory: " << dir << endl;
+    cout << "Enter the directory to list files:"<<endl;
+    cin >> dir;
+    DIR* checkdir = opendir(dir.c_str());
+    if (!checkdir) {
+      cout << "Invalid directory"<<endl;
+      return -1;
+    }
+    closedir(checkdir);
+
     cout << "Enter the output file name (with .html extention):";
     cin >> output_file;
+
     // Flujo de salida para escribir en un archivo
 ofstream out;
 // Abre el archivo especificado
 out.open(output_file);
-
-// Si no se puede abrir el archivo, muestra un error
 if(!out) {
     cout << "Error opening " << output_file;
     return -1;
