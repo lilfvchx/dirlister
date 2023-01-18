@@ -2,6 +2,7 @@
 #include <dirent.h>
 #include <string>
 #include <fstream>
+#include <string.h>
 using namespace std;
 
 // Funcion para listar los archivos en un directorio de forma recursiva
