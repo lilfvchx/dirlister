@@ -94,8 +94,9 @@ out << "</html>" << endl;
 // Cierra el archivo de salida
 out.close();
 cout << "Directory listing saved to " << output_file << endl;
+//En este código se ha agregado la propiedad border='1' a la tabla para mostrar los bordes de las celdas y también se ha modificado la forma en que se escribe la información en la tabla, de tal manera que el nombre del archivo va en la primera columna y su ruta completa va en la segunda columna.
 return 0;
 }
 
-En este código se ha agregado la propiedad border='1' a la tabla para mostrar los bordes de las celdas y también se ha modificado la forma en que se escribe la información en la tabla, de tal manera que el nombre del archivo va en la primera columna y su ruta completa va en la segunda columna.
+
 
