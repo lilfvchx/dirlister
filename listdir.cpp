@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <string.h>
+#include <unistd.h>
 using namespace std;
 
 // Funcion para listar los archivos en un directorio de forma recursiva
@@ -35,7 +36,10 @@ void list_files(string dir, string tab, ofstream &out) {
             // escribe la fila de la tabla con el nombre del archivo y su ruta
             out << "<tr>" << endl;
             out << "<td>" << entry->d_name << "</td>" << endl;
-            out << "<td>" << dir << "</td>" << endl;
+            string path = dir;
+            size_t found = path.find_last_of("/\\");
+            string parent_dir = path.substr(0,found);
+            out << "<td>" << parent_dir << "</td>" << endl;
             out << "</tr>" << endl;
         }
     }
@@ -45,18 +49,11 @@ void list_files(string dir, string tab, ofstream &out) {
 
 int main() {
     // Directorio por defecto es el directorio actual
-    string dir;
+    char cwd[1024];
+    getcwd(cwd, sizeof(cwd));
+    string dir = cwd;
     // Nombre del archivo de salida
     string output_file;
-
-    cout << "Enter the directory to list files:"<<endl;
-    cin >> dir;
-    DIR* checkdir = opendir(dir.c_str());
-    if (!checkdir) {
-      cout << "Invalid directory"<<endl;
-      return -1;
-    }
-    closedir(checkdir);
 
     cout << "Enter the output file name (with .html extention):";
     cin >> output_file;
@@ -64,15 +61,14 @@ int main() {
     // Flujo de salida para escribir en un archivo
     ofstream out;
     // Abre el archivo especificado
-    out.open(output_file);
-
+    out.open(output_output_file);
     // Si no se puede abrir el archivo, muestra un error
-    if(!out) {
-        cout << "Error opening " << output_file;
-        return -1;
-    }
+if(!out) {
+    cout << "Error opening " << output_file;
+    return -1;
+}
 
-    // Escribe la estructura básica de un documento html en el archivo de salida
+// Escribe la estructura básica de un documento html en el archivo de salida
 out << "<html>" << endl;
 out << "<head>" << endl;
 out << "<title> Directory Listing </title>" << endl;
@@ -94,9 +90,3 @@ out << "</html>" << endl;
 // Cierra el archivo de salida
 out.close();
 cout << "Directory listing saved to " << output_file << endl;
-//En este código se ha agregado la propiedad border='1' a la tabla para mostrar los bordes de las celdas y también se ha modificado la forma en que se escribe la información en la tabla, de tal manera que el nombre del archivo va en la primera columna y su ruta completa va en la segunda columna.
-return 0;
-}
-
-
-
