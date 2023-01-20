@@ -1,4 +1,4 @@
-Copy code
+
 #include <iostream>
 #include <dirent.h>
 #include <string>
