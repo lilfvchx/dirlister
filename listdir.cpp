@@ -2,10 +2,8 @@
 #include <dirent.h>
 #include <string>
 #include <fstream>
-#include <string.h>
 #include <unistd.h>
 using namespace std;
-
 void list_files(string dir, ofstream &out) {
     DIR *dp = opendir(dir.c_str());
     if (dp == nullptr) {
@@ -23,13 +21,14 @@ void list_files(string dir, ofstream &out) {
         else {
             out << "<tr>" << endl;
             out << "<td>" << entry->d_name << "</td>" << endl;
-            out << "<td>" << dir << "</td>" << endl;
+            size_t found = dir.find_last_of("/\\");
+            string parent_dir = dir.substr(found+1);
+            out << "<td>" << parent_dir << "</td>" << endl;
             out << "</tr>" << endl;
         }
     }
     closedir(dp);
 }
-
 int main() {
     char cwd[1024];
     if (getcwd(cwd, sizeof(cwd)) == nullptr) {
@@ -38,16 +37,13 @@ int main() {
     }
     string dir = cwd;
     string output_file;
-
     cout << "Enter the output file name (with .html extention):";
     cin >> output_file;
-
     ofstream out(output_file);
     if (!out) {
         cerr << "Error opening " << output_file << endl;
         return -1;
     }
-
     out << "<html>" << endl;
     out << "<head>" << endl;
     out << "<title> Directory Listing </title>" << endl;
@@ -60,12 +56,10 @@ int main() {
     out << "<th> File Path </th>" << endl;
     out << "</tr>" << endl;
     list_files(dir, out);
-
     out << "</table>" << endl;
     out << "</body>" << endl;
     out << "</html>" << endl;
     out.close();
     cout << "Directory listing saved to " << output_file << endl;
-
     return 0;
 }
